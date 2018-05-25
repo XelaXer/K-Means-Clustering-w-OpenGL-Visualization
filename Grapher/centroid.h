@@ -1,19 +1,20 @@
 #include <string>
+#include "point.h"
 
-#ifndef point_hpp
-#define point_hpp
+#ifndef centroid_hpp
+#define centroid_hpp
 
-class point {
+class centroid : point {
 	float x, y, z;
 	float r, g, b;
 	float size;
 	int group;
 	std::string label;
 public:
-	point::point();
-	point::point(float, float, float);
-	point::point(float, float, float, float);
-	point::point(float, float, float, float, float, float, float);
+	centroid::centroid();
+	centroid::centroid(float, float, float);
+	centroid::centroid(float, float, float, float);
+	centroid::centroid(float, float, float, float, float, float, float);
 	float getX();
 	float getY();
 	float getZ();
@@ -34,4 +35,5 @@ public:
 	void setLabel(std::string);
 	void draw();
 };
+
 #endif

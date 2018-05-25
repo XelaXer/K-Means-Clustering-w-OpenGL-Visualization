@@ -1,3 +1,4 @@
+#include <freeglut.h>
 #include "glApp.h"
 
 int main(int argc, char** argv) {
