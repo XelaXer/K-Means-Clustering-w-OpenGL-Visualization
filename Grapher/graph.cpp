@@ -31,6 +31,10 @@ void graph::initialize() {
 	}
 }
 
+void graph::generateRandomData() {
+
+}
+
 void graph::draw() {
 	g.draw();
 	for (int i = 0; i < points.size(); i++) {

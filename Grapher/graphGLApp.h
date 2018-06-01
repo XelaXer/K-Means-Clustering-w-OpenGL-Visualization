@@ -1,3 +1,4 @@
+/*
 #ifndef graphglapp_hpp
 #define graphglapp_hpp
 
@@ -22,3 +23,4 @@ void graphGLApp::render() {
 	glutSwapBuffers();
 }
 #endif
+*/

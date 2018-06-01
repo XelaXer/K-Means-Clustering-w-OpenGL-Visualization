@@ -4,7 +4,7 @@
 #ifndef centroid_hpp
 #define centroid_hpp
 
-class centroid : point {
+class centroid : public point {
 	float x, y, z;
 	float r, g, b;
 	float size;

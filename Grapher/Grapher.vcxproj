@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="centroid.cpp" />
+    <ClCompile Include="cluster.cpp" />
     <ClCompile Include="glApp.cpp" />
     <ClCompile Include="graph.cpp" />
     <ClCompile Include="grid.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="centroid.h" />
+    <ClInclude Include="cluster.h" />
     <ClInclude Include="glApp.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="graphGLApp.h" />
