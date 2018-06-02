@@ -2,7 +2,6 @@
 #include "point.h"
 
 point::point() {}
-
 point::point(float xx, float yy, float zz) {
 	x = xx;
 	y = yy;
@@ -12,7 +11,7 @@ point::point(float xx, float yy, float zz) {
 	b = 0;
 	size = 10.0;
 }
-point::point(float xx, float yy, float zz, float sizeS) {
+point::point(float xx, float yy, float zz, float sizeS, int tagG) {
 	x = xx;
 	y = yy;
 	z = zz;
@@ -20,8 +19,8 @@ point::point(float xx, float yy, float zz, float sizeS) {
 	g = 0;
 	b = 0;
 	size = sizeS;
+	tag = tagG;
 }
-
 point::point(float xx, float yy, float zz, float rr, float gg, float bb, float sizeS) {
 	x = xx;
 	y = yy;
@@ -40,6 +39,7 @@ float point::getG() { return g; }
 float point::getB() { return b; }
 float point::getSize() { return size; }
 int point::getGroup() { return group; }
+int point::getTag() { return tag; }
 std::string point::getLabel() { return label; }
 void point::setX(float k) { x = k; }
 void point::setY(float k) { y = k; }
@@ -49,6 +49,7 @@ void point::setG(float k) { g = k; }
 void point::setB(float k) { b = k; }
 void point::setSize(float k) { size = k; }
 void point::setGroup(int k) { group = k; }
+void point::setTag(int k) { tag = k; }
 void point::setLabel(std::string k) { label = k; }
 
 void point::draw() {

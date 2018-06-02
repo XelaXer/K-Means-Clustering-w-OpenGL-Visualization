@@ -1,6 +1,11 @@
 #include <cmath>
+#include <iostream>
 #include "kmeansclustering.h"
 #include "point.h"
+#include "glApp.h"
+
+void kmeans::setK(unsigned int kk) { k = kk; }
+unsigned int kmeans::getK() { return k; }
 
 float kmeans::euclideanDistance2D(point &a, centroid &b) {
 	return (sqrt(pow((b.getX() - a.getX()), 2.0) + pow((b.getY() - a.getY()), 2.0)));
@@ -20,22 +25,69 @@ int kmeans::findNearestCentroid(point &a, std::vector<centroid> & centroids) {
 	return centroidT;
 }
 
-// Place centroids randomly
-// Repeat until convergence
-// For each point
-// Find nearest centroid j (use minimum Euclidean Distance)
-// ^ check all centroids
-// Assign the point to cluster (centroid) j
-
 void kmeans::run(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k) {
-	// Need input for how many clusters, "k"
-	// This assigns each point to its closest centroid
 	int index;
-	for (int i = 0; i < points.size(); i++) {
-		index = findNearestCentroid(points[i], centroids);
-		points[i].setGroup(centroids[index].getGroup());
-		
-		// Assign point to a cluster
+	int maxIterations = 15;
+	float x, y;
+	for (int itr = 0; itr < maxIterations; itr++) {
+		for (std::vector<point>::iterator i = points.begin(); i != points.end(); ++i) {
+			index = findNearestCentroid(*i, centroids);
+			i->setGroup(centroids[index].getGroup());
+			if (!centroids[index].contains(*i)) {	// Check for duplicate point
+				centroids[index].addMember(*i);
+				for (int j = 0; j < centroids.size(); j++) { // Swap point from old centroid to new centroid
+					if ((j != index) && (centroids[j].contains(*i))) {
+						centroids[j].removeMember(*i);
+					}
+				}
+			}
+			// Console Checks
+			std::cout << "Point " << i->getX() << ", " << i->getY();
+			std::cout << " assigned to centroid " << centroids[index].getGroup();
+			std::cout << std::endl;
+		}
+		for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
+			x = i->computeXAverage();
+			y = i->computeYAverage();
+			i->setX(x);
+			i->setY(y);
+			i->draw();
+			std::cout << "Centroid " << i->getGroup() << " new x = " << x;
+			std::cout << std::endl;
+			std::cout << "Centroid " << i->getGroup() << " new y = " << y;
+			std::cout << std::endl;
+		}
 	}
-	// For each cluster
+}
+
+void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k) {
+	int index;
+	float x, y;
+	for (std::vector<point>::iterator i = points.begin(); i != points.end(); ++i) {
+		index = findNearestCentroid(*i, centroids);
+		i->setGroup(centroids[index].getGroup());
+		if (!centroids[index].contains(*i)) {	// Check for duplicate point
+			centroids[index].addMember(*i);
+			for (int j = 0; j < centroids.size(); j++) { // Swap point from old centroid to new centroid
+				if ((j != index) && (centroids[j].contains(*i))) {
+					centroids[j].removeMember(*i);
+				}
+			}
+		}
+		// Console Checks
+		std::cout << "Point " << i->getX() << ", " << i->getY();
+		std::cout << " assigned to centroid " << centroids[index].getGroup();
+		std::cout << std::endl;
+	}
+	for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
+		x = i->computeXAverage();
+		y = i->computeYAverage();
+		i->setX(x);
+		i->setY(y);
+		i->draw();
+		std::cout << "Centroid " << i->getGroup() << " new x = " << x;
+		std::cout << std::endl;
+		std::cout << "Centroid " << i->getGroup() << " new y = " << y;
+		std::cout << std::endl;
+	}
 }

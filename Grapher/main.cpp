@@ -2,7 +2,7 @@
 #include "glApp.h"
 
 int main(int argc, char** argv) {
-	const char* label = "Grapher";
+	const char* label = "K-Means Clustering Grapher";
 	// GLUT Initialization
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);

@@ -16,6 +16,7 @@ public:
 	point getMember(int);
 	void setCentroid(centroid);
 	centroid getCentroid();
+
 };
 
 #endif

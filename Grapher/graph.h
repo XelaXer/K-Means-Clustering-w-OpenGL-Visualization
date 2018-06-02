@@ -12,11 +12,15 @@ class graph {
 	kmeans km;
 	std::vector<point> points;
 	std::vector<centroid> centroids;
+	int iterationCount;
 
 public:
 	graph::graph();
 	void draw();
 	void initialize();
-	void generateRandomData();
+	void generateRandomData(int);
+	void runAlgorithm();
+	void runAlgorithmIteration();
+	void generateCentroids();
 };
 #endif

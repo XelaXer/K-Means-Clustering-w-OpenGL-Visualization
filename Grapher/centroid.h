@@ -1,19 +1,22 @@
 #include <string>
+#include <vector>
 #include "point.h"
 
 #ifndef centroid_hpp
 #define centroid_hpp
 
-class centroid : public point {
+class centroid {
 	float x, y, z;
 	float r, g, b;
 	float size;
 	int group;
 	std::string label;
+	std::vector<point> members;
 public:
 	centroid::centroid();
 	centroid::centroid(float, float, float);
 	centroid::centroid(float, float, float, float);
+	centroid::centroid(float, float, float, float, int);
 	centroid::centroid(float, float, float, float, float, float, float);
 	float getX();
 	float getY();
@@ -34,6 +37,13 @@ public:
 	void setGroup(int);
 	void setLabel(std::string);
 	void draw();
+	void addMember(point &);
+	int membersSize();
+	float computeXAverage();
+	float computeYAverage();
+	void drawConnections();
+	bool contains(point &);
+	void removeMember(point &);
 };
 
 #endif
