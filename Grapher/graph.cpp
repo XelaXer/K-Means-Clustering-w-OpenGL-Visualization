@@ -32,8 +32,8 @@ void graph::initialize() {
 	std::cin >> c;
 	std::cout << std::endl;
 	if (c == 'y') {
-		points.reserve(50);
-		generateRandomData(50);
+		points.reserve(150);
+		generateRandomData(150);
 	} else if (c == 'n') {
 		if (myfile.is_open()) {
 			while (std::getline(myfile, line)) {
@@ -58,7 +58,8 @@ void graph::generateCentroids() {
 	for (int i = 0; i < km.getK(); i++) {
 		x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-		centroids.push_back(centroid(x, y, -5.0, 8.0, group++));
+		z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+		centroids.push_back(centroid(x, y, z - 5.0, 8.0, group++));
 	}
 }
 
@@ -69,7 +70,8 @@ void graph::generateRandomData(int amount) {
 	for (int i = 0; i < amount; i++) {
 		x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-		points.push_back(point(x, y, -5.0, 5.0, tag++));
+		z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+		points.push_back(point(x, y, z - 5.0, 5.0, tag++));
 	}
 }
 

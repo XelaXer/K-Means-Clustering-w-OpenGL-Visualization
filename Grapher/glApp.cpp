@@ -8,57 +8,52 @@ extern "C"
 void displayCallback() {
 	currentInstance->render();
 }
-
 void keyboardCallback(unsigned char key, int x, int y) {
 	currentInstance->keypress(key);
 }
-
-void mouseCallback(int b, int s, int x, int y) {
-	//currentInstance->mouse
-	
-	if (b == GLUT_LEFT_BUTTON && s == GLUT_DOWN) {
-		currentInstance->mouseDown = true;
-	}
-	float mx = (float)x;
-	float my = (float)y;
-	currentInstance->windowToScene(mx, my);
-	std::cout << "Mouse Coordinates" << std::endl;
-	std::cout << x << " " << y << std::endl;
-
-	// Determine button and state and call appropriate handler
-	if (b == 0) {
-		// Left click
-		if (s == 0) {
-			// Left down
-			//currentInstance->mouseDown(mx, my);
-		} else {
-			// Left up
-			//currentInstance->mouseUp(mx, my);
-		}
-	} else {
-		// Right click
-		if (s == 0) {
-			// Right down
-			//currentInstance->mouseRightDown(mx, my);
-		} else {
-			// Right up
-			//currentInstance->mouseRightUp(mx, my);
-		}
-	}
+void mouseButtonCallback(int button, int state, int x, int y) {
+	currentInstance->mouseButton(button, state, x,y);
 }
-
-void mouseMotionCallback(int x, int y) {
-	if (currentInstance->mouseDown)
-	{
-		//yrot = x - xdiff;
-		//xrot = y + ydiff;
-
-		//glutPostRedisplay();
-	}
-
+void mouseMoveCallback(int x, int y) {
+	currentInstance->mouseMove(x, y);
 }
-
+void idleCallback() {
+	currentInstance->idle();
+}
 // End of static instance code
+
+//void mouseCallback(int b, int s, int x, int y) {
+//
+//	float mx = (float)x;
+//	float my = (float)y;
+//	currentInstance->windowToScene(mx, my);
+//	std::cout << "Mouse Coordinates" << std::endl;
+//	std::cout << x << " " << y << std::endl;
+//
+//	// Determine button and state and call appropriate handler
+//	if (b == 0) {
+//		// Left click
+//		if (s == 0) {
+//			// Left down
+//			//currentInstance->mouseDown(mx, my);
+//		} else {
+//			// Left up
+//			//currentInstance->mouseUp(mx, my);
+//		}
+//	} else {
+//		// Right click
+//		if (s == 0) {
+//			// Right down
+//			//currentInstance->mouseRightDown(mx, my);
+//		} else {
+//			// Right up
+//			//currentInstance->mouseRightUp(mx, my);
+//		}
+//	}
+//}
+
+
+
 
 void resize(int width, int height) {
 	if (height == 0) {
@@ -84,11 +79,11 @@ glApp::glApp(const char* label) {
 
 void glApp::run() {
 	glutKeyboardFunc(keyboardCallback);
-	glutMouseFunc(mouseCallback);
+	glutMouseFunc(mouseButtonCallback);
 	glutDisplayFunc(displayCallback);
-	glutIdleFunc(displayCallback);
+	glutIdleFunc(idleCallback);
 	glutReshapeFunc(resize);
-	glutMotionFunc(mouseMotionCallback);
+	glutMotionFunc(mouseMoveCallback);
 	glutMainLoop();
 	
 }
@@ -96,48 +91,50 @@ void glApp::run() {
 void glApp::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
+	/*gluLookAt(
+		x, y, -5,
+		x + lx, y + ly, 1.0,
+		0.0, 0.0, 1.0
+		);*/
+
+
 	g.draw();
 	glFlush();
 	glutSwapBuffers();
 }
 
-void glApp::mouse() {
-	glutMouseFunc(mouseCallback);
+void glApp::idle() {
+	glutPostRedisplay();
 }
 
-//void mouseMove(int x, int y)
-//{
-//	if (isDragging) { // only when dragging
-//					  // update the change in angle
-//		deltaAngle = (x - xDragStart) * 0.005;
-//
-//		// camera's direction is set to angle + deltaAngle
-//		lx = -sin(angle + deltaAngle);
-//		ly = cos(angle + deltaAngle);
-//	}
-//}
-//
-//void mouseButton(int button, int state, int x, int y)
-//{
-//	if (button == GLUT_LEFT_BUTTON) {
-//		if (state == GLUT_DOWN) { // left mouse button pressed
-//			isDragging = 1; // start dragging
-//			xDragStart = x; // save x where button first pressed
-//		}
-//		else { /* (state = GLUT_UP) */
-//			angle += deltaAngle; // update camera turning angle
-//			isDragging = 0; // no longer dragging
-//		}
-//	}
-//}
+void glApp::mouseMove(int x, int y) {
+	if (isDragging) { // only when dragging
+					  // update the change in angle
+		deltaAngle = (x - xDragStart) * 0.005;
+		std::cout << "Delta Angle: " << deltaAngle << std::endl;
+		glTranslatef(0, 0, -5.0);
+		glRotatef(deltaAngle, 0.0, 0.0, -2.0);
+		glTranslatef(0, 0, 5.0);
+	}
+}
 
-
+void glApp::mouseButton(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON) {
+		if (state == GLUT_DOWN) { // left mouse button pressed
+			isDragging = 1; // start dragging
+			xDragStart = x; // save x where button first pressed
+		}
+		else { /* (state = GLUT_UP) */
+			angle += deltaAngle; // update camera turning angle
+			isDragging = 0; // no longer dragging
+		}
+	}
+}
 
 void glApp::rotateLeft() {
 	glTranslatef(0, 0, -5.0);
-	glRotatef(1.0f, 0.0, 0.0, 1.0);
+	glRotatef(1.0f, 0.0, 0.0, -2.0);
 	glTranslatef(0, 0, 5.0);
-
 }
 
 void glApp::rotateRight() {
@@ -162,10 +159,6 @@ void glApp::keypress(unsigned char key) {
 	if (key == 114) {
 		g.runAlgorithmIteration();
 	}
-	//if (key == 97) {
-		//g.runAlgorithm();
-		//rotate();
-	//}
 	if (key == 97) {
 		rotateLeft();
 	}

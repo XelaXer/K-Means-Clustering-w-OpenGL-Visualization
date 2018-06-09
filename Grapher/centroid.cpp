@@ -66,11 +66,11 @@ void centroid::draw() {
 	glBegin(GL_TRIANGLES);
 	glColor3f(r, g, b);
 	// Lower left vertex
-	glVertex3f(x - 0.05, y - 0.05, -5.0f);
+	//glVertex3f(x - 0.05, y - 0.05, z-5.0f);
 	// Lower right vertex
-	glVertex3f(x + 0.05, y - 0.05, -5.0f);
+	//glVertex3f(x + 0.05, y - 0.05, z-5.0f);
 	// Upper vertex
-	glVertex3f(x, y + 0.025, -5.0f);
+	//glVertex3f(x, y + 0.025, z-5.0f);
 	glEnd();
 
 }
@@ -85,12 +85,10 @@ int centroid::membersSize() {
 
 float centroid::computeXAverage() {
 	if (members.size() == 0) { return x; }
-	//std::cout << "Computing X averages" << std::endl;
 	float xx = 0, temp = 0;
 	float count = 0;
 	for (std::vector<point>::iterator i = members.begin(); i != members.end(); ++i) {
 		temp = i->getX();
-		//std::cout << temp << std::endl;
 		xx += temp;
 		count++;
 	}
@@ -106,6 +104,17 @@ float centroid::computeYAverage() {
 		count++;
 	}
 	return (yy / count);
+}
+
+float centroid::computeZAverage() {
+	if (members.size() == 0) { return z; }
+	float zz = 0;
+	float count = 0;
+	for (int i = 0; i < members.size(); i++) {
+		zz += members[i].getZ();
+		count++;
+	}
+	return (zz / count);
 }
 
 void centroid::drawConnections() {

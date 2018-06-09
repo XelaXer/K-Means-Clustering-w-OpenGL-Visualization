@@ -41,6 +41,7 @@ public:
 	int membersSize();
 	float computeXAverage();
 	float computeYAverage();
+	float computeZAverage();
 	void drawConnections();
 	bool contains(point &);
 	void removeMember(point &);

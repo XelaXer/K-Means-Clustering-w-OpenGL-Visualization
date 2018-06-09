@@ -9,7 +9,7 @@ void kmeans::setK(unsigned int kk) { k = kk; }
 unsigned int kmeans::getK() { return k; }
 
 float kmeans::euclideanDistance2D(point &a, centroid &b) {
-	return (sqrt(pow((b.getX() - a.getX()), 2.0) + pow((b.getY() - a.getY()), 2.0)));
+	return (sqrt(pow((b.getX() - a.getX()), 2.0) + pow((b.getY() - a.getY()), 2.0)+ pow((b.getZ() - a.getZ()), 2.0)));
 }
 
 int kmeans::findNearestCentroid(point &a, std::vector<centroid> & centroids) {
@@ -29,7 +29,7 @@ int kmeans::findNearestCentroid(point &a, std::vector<centroid> & centroids) {
 void kmeans::run(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k) {
 	int index;
 	int maxIterations = 15;
-	float x, y;
+	float x, y, z;
 	for (int itr = 0; itr < maxIterations; itr++) {
 		for (std::vector<point>::iterator i = points.begin(); i != points.end(); ++i) {
 			index = findNearestCentroid(*i, centroids);
@@ -50,8 +50,10 @@ void kmeans::run(std::vector<point> & points, std::vector<centroid> & centroids,
 		for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
 			x = i->computeXAverage();
 			y = i->computeYAverage();
+			z = i->computeZAverage();
 			i->setX(x);
 			i->setY(y);
+			i->setZ(z);
 			i->draw();
 			std::cout << "Centroid " << i->getGroup() << " new x = " << x;
 			std::cout << std::endl;
@@ -63,7 +65,7 @@ void kmeans::run(std::vector<point> & points, std::vector<centroid> & centroids,
 
 void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k) {
 	int index;
-	float x, y;
+	float x, y, z;
 	for (std::vector<point>::iterator i = points.begin(); i != points.end(); ++i) {
 		index = findNearestCentroid(*i, centroids);
 		i->setGroup(centroids[index].getGroup());
@@ -84,8 +86,10 @@ void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & c
 	for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
 		x = i->computeXAverage();
 		y = i->computeYAverage();
+		z = i->computeZAverage();
 		i->setX(x);
 		i->setY(y);
+		i->setZ(z);
 		i->draw();
 		std::cout << "Centroid " << i->getGroup() << " new x = " << x;
 		std::cout << std::endl;
