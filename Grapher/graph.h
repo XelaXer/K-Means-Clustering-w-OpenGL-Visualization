@@ -13,9 +13,11 @@ class graph {
 	std::vector<point> points;
 	std::vector<centroid> centroids;
 	int iterationCount;
+	float angleView;
 
 public:
 	graph::graph();
+	void rotate();
 	void draw();
 	void initialize();
 	void generateRandomData(int);

@@ -24,6 +24,12 @@ void grid::drawGrid() {
 	glVertex3f(2, 0, -5.0);
 	glVertex3f(-2, 0, -5.0);
 	glEnd();
+
+	// Test
+	glBegin(GL_LINES);
+	glVertex3f(0, 0, -3.0);
+	glVertex3f(0, 0, -7.0);
+	glEnd();
 }
 
 void grid::drawNotches() {

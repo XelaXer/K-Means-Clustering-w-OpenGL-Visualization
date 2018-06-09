@@ -1,4 +1,5 @@
 #include <cmath>
+#include <freeglut.h>
 #include <iostream>
 #include "kmeansclustering.h"
 #include "point.h"
@@ -74,6 +75,7 @@ void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & c
 				}
 			}
 		}
+		//glutPostRedisplay();
 		// Console Checks
 		std::cout << "Point " << i->getX() << ", " << i->getY();
 		std::cout << " assigned to centroid " << centroids[index].getGroup();

@@ -163,7 +163,6 @@
     <ClInclude Include="cluster.h" />
     <ClInclude Include="glApp.h" />
     <ClInclude Include="graph.h" />
-    <ClInclude Include="graphGLApp.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="kmeansclustering.h" />
     <ClInclude Include="point.h" />

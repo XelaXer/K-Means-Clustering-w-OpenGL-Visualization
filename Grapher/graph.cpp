@@ -1,3 +1,4 @@
+#include <freeglut.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -11,6 +12,7 @@
 
 graph::graph() {
 	iterationCount = 0;
+	angleView = 0;
 	initialize();
 }
 
@@ -30,8 +32,8 @@ void graph::initialize() {
 	std::cin >> c;
 	std::cout << std::endl;
 	if (c == 'y') {
-		points.reserve(100);
-		generateRandomData(100);
+		points.reserve(50);
+		generateRandomData(50);
 	} else if (c == 'n') {
 		if (myfile.is_open()) {
 			while (std::getline(myfile, line)) {
@@ -90,4 +92,8 @@ void graph::runAlgorithm() {
 void graph::runAlgorithmIteration() {
 	std::cout << "K-Means Clustering Iteration: " << iterationCount << std::endl;
 	km.runIteration(points, centroids, km.getK());
+}
+
+void graph::rotate() {
+	
 }
