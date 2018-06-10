@@ -1,5 +1,6 @@
 #include <freeglut.h>
 #include <iostream>
+#include <thread>
 #include "glApp.h"
 
 // To create static instance for glut functions
@@ -8,7 +9,7 @@ extern "C"
 void displayCallback() {
 	currentInstance->render();
 }
-void keyboardCallback(unsigned char key, int x, int y) {
+void keyboardCallback(unsigned char const key, int x, int y) {
 	currentInstance->keypress(key);
 }
 void mouseButtonCallback(int button, int state, int x, int y) {
@@ -21,6 +22,8 @@ void idleCallback() {
 	currentInstance->idle();
 }
 // End of static instance code
+
+
 
 //void mouseCallback(int b, int s, int x, int y) {
 //
@@ -78,26 +81,25 @@ glApp::glApp(const char* label) {
 }
 
 void glApp::run() {
+	//std::thread t1(threadOne);
+	//std::thread t2(threadTwo);
+	
+	glutDisplayFunc(displayCallback);
+	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyboardCallback);
 	glutMouseFunc(mouseButtonCallback);
-	glutDisplayFunc(displayCallback);
-	glutIdleFunc(idleCallback);
-	glutReshapeFunc(resize);
 	glutMotionFunc(mouseMoveCallback);
+	glutIdleFunc(idleCallback);
 	glutMainLoop();
+	//t1.join();
+	//t2.join();
+	
 	
 }
 
 void glApp::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
-	/*gluLookAt(
-		x, y, -5,
-		x + lx, y + ly, 1.0,
-		0.0, 0.0, 1.0
-		);*/
-
-
 	g.draw();
 	glFlush();
 	glutSwapBuffers();
@@ -155,9 +157,29 @@ void glApp::rotateDown() {
 	glTranslatef(0, 0, 5.0);
 }
 
+void delay() {
+
+}
+
+void glApp::animate() {
+	for (int i = 0; i < 100; i++) {
+		g.runAlgorithmIteration();
+		//glutDisplayFunc(displayCallback);
+		render();
+		//sleep(500);
+
+	}
+}
+
 void glApp::keypress(unsigned char key) {
 	if (key == 114) {
 		g.runAlgorithmIteration();
+	}
+	if (key == 't') {
+		//g.runAlgorithm();
+		//t
+		animate();
+
 	}
 	if (key == 97) {
 		rotateLeft();

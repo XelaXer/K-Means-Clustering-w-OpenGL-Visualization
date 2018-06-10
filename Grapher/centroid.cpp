@@ -22,7 +22,6 @@ void centroid::setB(float k) { b = k; }
 void centroid::setSize(float k) { size = k; }
 void centroid::setGroup(int k) { group = k; }
 void centroid::setLabel(std::string k) { label = k; }
-
 centroid::centroid(float xx, float yy, float zz) {
 	x = xx;
 	y = yy;
@@ -30,6 +29,9 @@ centroid::centroid(float xx, float yy, float zz) {
 	r = 0;
 	g = 0;
 	b = 0;
+	xAvg = 0;
+	yAvg = 0;
+	zAvg = 0;
 	size = 10.0;
 }
 centroid::centroid(float xx, float yy, float zz, float ss, int gs) {
@@ -39,6 +41,9 @@ centroid::centroid(float xx, float yy, float zz, float ss, int gs) {
 	r = 0;
 	g = 0;
 	b = 0;
+	xAvg = 0;
+	yAvg = 0;
+	zAvg = 0;
 	size = ss;
 	group = gs;
 }
@@ -49,6 +54,9 @@ centroid::centroid(float xx, float yy, float zz, float sizeS) {
 	r = 0;
 	g = 0;
 	b = 0;
+	xAvg = 0;
+	yAvg = 0;
+	zAvg = 0;
 	size = sizeS;
 }
 centroid::centroid(float xx, float yy, float zz, float rr, float gg, float bb, float sizeS) {
@@ -58,6 +66,9 @@ centroid::centroid(float xx, float yy, float zz, float rr, float gg, float bb, f
 	r = rr;
 	g = gg;
 	b = bb;
+	xAvg = 0;
+	yAvg = 0;
+	zAvg = 0;
 	size = sizeS;
 }
 
@@ -83,13 +94,27 @@ int centroid::membersSize() {
 	return members.size();
 }
 
+void centroid::computeAverage() {
+	if (members.size() == 0) { return; }
+	float xx = 0, yy = 0, zz = 0;
+	float count = 0;
+	for (std::vector<point>::iterator i = members.begin(); i != members.end(); ++i) {
+		xx += i->getX();
+		yy += i->getY();
+		zz += i->getZ();
+		count++;
+	}
+	x = (xx / count);
+	y = (yy / count);
+	z = (zz / count);
+}
+
 float centroid::computeXAverage() {
 	if (members.size() == 0) { return x; }
 	float xx = 0, temp = 0;
 	float count = 0;
 	for (std::vector<point>::iterator i = members.begin(); i != members.end(); ++i) {
-		temp = i->getX();
-		xx += temp;
+		xx += i->getX();
 		count++;
 	}
 	return (xx / count);
@@ -97,10 +122,10 @@ float centroid::computeXAverage() {
 
 float centroid::computeYAverage() {
 	if (members.size() == 0) { return y; }
-	float yy = 0;
+	float yy = 0, temp = 0;
 	float count = 0;
-	for (int i = 0; i < members.size(); i++) {
-		yy += members[i].getY();
+	for (std::vector<point>::iterator i = members.begin(); i != members.end(); ++i) {
+		yy += i->getY();
 		count++;
 	}
 	return (yy / count);
@@ -108,10 +133,10 @@ float centroid::computeYAverage() {
 
 float centroid::computeZAverage() {
 	if (members.size() == 0) { return z; }
-	float zz = 0;
+	float zz = 0, temp = 0;
 	float count = 0;
-	for (int i = 0; i < members.size(); i++) {
-		zz += members[i].getZ();
+	for (std::vector<point>::iterator i = members.begin(); i != members.end(); ++i) {
+		zz += i->getZ();
 		count++;
 	}
 	return (zz / count);
@@ -124,7 +149,6 @@ void centroid::drawConnections() {
 	for (int i = 0; i < members.size(); i++) {
 		glBegin(GL_LINES);
 		glVertex3f(x, y, z);
-		//std::cout << members[i].getX() << members[i].getY() << members[i].getZ() << std::endl;
 		xx = members[i].getX();
 		yy = members[i].getY();
 		zz = members[i].getZ();
@@ -132,6 +156,7 @@ void centroid::drawConnections() {
 		glEnd();
 	}
 }
+
 bool centroid::contains(point & a) {
 	for (int i = 0; i < members.size(); i++) {
 		if (a.getTag() == members[i].getTag()) {
@@ -142,15 +167,9 @@ bool centroid::contains(point & a) {
 }
 
 void centroid::removeMember(point & a) {
-	//std::vector<point>::iterator it;
-	//it = find(members.begin(), members.end(), a);
-	//members.erase(it);
 	for (int i = 0; i < members.size(); i++) {
 		if (members[i].getTag() == a.getTag()) {
 			members.erase(members.begin() + i);
-			//break;
 		}
 	}
-
-
 }

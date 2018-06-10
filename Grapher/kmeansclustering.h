@@ -11,12 +11,15 @@ class kmeans {
 	unsigned int k;
 	// add constructor that takes the "k" for the number of clusters
 public:
-	float euclideanDistance2D(point &, centroid &);
-	int findNearestCentroid(point &, std::vector<centroid> &);
+	inline float euclideanDistance2D(point &, centroid &);
+	inline int findNearestCentroid(point &, std::vector<centroid> &);
 	void run(std::vector<point> &, std::vector<centroid> &, unsigned int);
 	void runIteration(std::vector<point> &, std::vector<centroid> &, unsigned int);
 	void setK(unsigned int);
 	unsigned int getK();
+	void checkPoint(point &p, std::vector<centroid> & centroids, int index);
+	//void threadOneT(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k);
+
 };
 
 #endif

@@ -8,6 +8,7 @@
 class centroid {
 	float x, y, z;
 	float r, g, b;
+	float xAvg, yAvg, zAvg;
 	float size;
 	int group;
 	std::string label;
@@ -45,6 +46,7 @@ public:
 	void drawConnections();
 	bool contains(point &);
 	void removeMember(point &);
+	void computeAverage();
 };
 
 #endif

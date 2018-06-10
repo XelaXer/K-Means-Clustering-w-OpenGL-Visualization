@@ -22,7 +22,7 @@ void graph::initialize() {
 	std::string temp;
 	std::stringstream ss;
 	float x, y, z, s;
-	int k, tag = 0, count = 0;
+	int k, cc, tag = 0, count = 0;
 	char c;
 	std::cout << "Enter the number of clusters:";
 	std::cin >> k;
@@ -32,8 +32,11 @@ void graph::initialize() {
 	std::cin >> c;
 	std::cout << std::endl;
 	if (c == 'y') {
-		points.reserve(150);
-		generateRandomData(150);
+		std::cout << "How many points: ";
+		std::cin >> cc;
+		std::cout << std::endl;
+		points.reserve(cc);
+		generateRandomData(cc);
 	} else if (c == 'n') {
 		if (myfile.is_open()) {
 			while (std::getline(myfile, line)) {
@@ -91,9 +94,15 @@ void graph::runAlgorithm() {
 	km.run(points, centroids, km.getK());
 }
 
+
+
 void graph::runAlgorithmIteration() {
-	std::cout << "K-Means Clustering Iteration: " << iterationCount << std::endl;
+	
+	//clock_t startTime = clock();
+	//std::cout << "K-Means Clustering Iteration: " << iterationCount++ << std::endl;
+	
 	km.runIteration(points, centroids, km.getK());
+	//std::cout << "Time: " << clock()-startTime << std::endl;
 }
 
 void graph::rotate() {

@@ -36,5 +36,6 @@ public:
 	void mouseMove(int,int);
 	void mouseButton(int, int, int, int);
 	void windowToScene(float &, float &);
+	void animate();
 };
 #endif
