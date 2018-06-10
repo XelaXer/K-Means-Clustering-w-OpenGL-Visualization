@@ -53,8 +53,30 @@ void kmeans::run(std::vector<point> & points, std::vector<centroid> & centroids,
 	}
 }
 
+//void computeT1(std::vector<point> & points, std::vector<centroid> & centroids, int index) {
+//	for (std::vector<point>::iterator i = points.begin() ; i != points.end()- (points.size() / 2); ++i) {
+//		//index = findNearestCentroid(*i, centroids);
+//		i->setGroup(centroids[index].getGroup());
+//		//checkPoint(*i, centroids, index);
+//	}
+//}
+//
+//void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & centroids, int index) {
+//	for (std::vector<point>::iterator i = points.begin() + (points.size()/2); i != points.end(); ++i) {
+//		index = findNearestCentroid(*i, centroids);
+//		i->setGroup(centroids[index].getGroup());
+//		checkPoint(*i, centroids, index);
+//	}
+//}
+//std::thread t1(&kmeans::computeT1, this, std::ref(points), std::ref(centroids), std::ref(index));
+//	std::thread t2(&kmeans::computeT2, this, std::ref(points), std::ref(centroids), std::ref(index));
+//t1.join();
+//t2.join();
+
 void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k) {
 	int index;
+
+	
 	for (std::vector<point>::iterator i = points.begin(); i != points.end(); ++i) {
 		index = findNearestCentroid(*i, centroids);
 		i->setGroup(centroids[index].getGroup());
@@ -70,13 +92,4 @@ void kmeans::runIteration(std::vector<point> & points, std::vector<centroid> & c
 //t1.join();
 //t2.join();
 
-//for (std::vector<point>::iterator i = points.begin() ; i != points.end()- (points.size() / 2); ++i) {
-//	index = findNearestCentroid(*i, centroids);
-//	i->setGroup(centroids[index].getGroup());
-//	checkPoint(*i, centroids, index);
-//}
-//for (std::vector<point>::iterator i = points.begin() + (points.size()/2); i != points.end(); ++i) {
-//	index = findNearestCentroid(*i, centroids);
-//	i->setGroup(centroids[index].getGroup());
-//	checkPoint(*i, centroids, index);
-//}
+

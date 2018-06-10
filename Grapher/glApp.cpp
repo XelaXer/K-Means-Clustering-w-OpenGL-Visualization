@@ -6,12 +6,18 @@
 // To create static instance for glut functions
 static glApp* currentInstance;
 extern "C"
+
 void displayCallback() {
 	currentInstance->render();
 }
 void keyboardCallback(unsigned char const key, int x, int y) {
-	currentInstance->keypress(key);
+	currentInstance->keypress(key, x, y);
 }
+
+void keyboardUpCallback(unsigned char const key, int x, int y) {
+	currentInstance->keypressUp(key, x, y);
+}
+
 void mouseButtonCallback(int button, int state, int x, int y) {
 	currentInstance->mouseButton(button, state, x,y);
 }
@@ -23,6 +29,17 @@ void idleCallback() {
 }
 // End of static instance code
 
+void glApp::rotateLeft() {
+}
+
+void glApp::rotateRight() {
+}
+
+void glApp::rotateUp() {
+}
+
+void glApp::rotateDown() {
+}
 
 
 //void mouseCallback(int b, int s, int x, int y) {
@@ -77,22 +94,36 @@ glApp::glApp(const char* label) {
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow(label);
+}
 
+void th1() {
+	glutDisplayFunc(displayCallback);
+	glutReshapeFunc(resize);
+}
+
+void th2() {
+	glutKeyboardFunc(keyboardCallback);
+	glutKeyboardUpFunc(keyboardUpCallback);
+	glutMouseFunc(mouseButtonCallback);
+	glutMotionFunc(mouseMoveCallback);
 }
 
 void glApp::run() {
-	//std::thread t1(threadOne);
-	//std::thread t2(threadTwo);
+	std::thread t1(th1);
+	std::thread t2(th2);
 	
-	glutDisplayFunc(displayCallback);
-	glutReshapeFunc(resize);
-	glutKeyboardFunc(keyboardCallback);
-	glutMouseFunc(mouseButtonCallback);
-	glutMotionFunc(mouseMoveCallback);
-	glutIdleFunc(idleCallback);
-	glutMainLoop();
+	
+	//glutDisplayFunc(displayCallback);
+	//glutReshapeFunc(resize);
+	//glutKeyboardFunc(keyboardCallback);
+	//glutMouseFunc(mouseButtonCallback);
+	//glutMotionFunc(mouseMoveCallback);
+	//glutIdleFunc(idleCallback);
+	//glutMainLoop();
 	//t1.join();
 	//t2.join();
+	glutIdleFunc(idleCallback);
+	glutMainLoop();
 	
 	
 }
@@ -105,9 +136,7 @@ void glApp::render() {
 	glutSwapBuffers();
 }
 
-void glApp::idle() {
-	glutPostRedisplay();
-}
+
 
 void glApp::mouseMove(int x, int y) {
 	if (isDragging) { // only when dragging
@@ -131,68 +160,56 @@ void glApp::mouseButton(int button, int state, int x, int y) {
 			isDragging = 0; // no longer dragging
 		}
 	}
-}
-
-void glApp::rotateLeft() {
-	glTranslatef(0, 0, -5.0);
-	glRotatef(1.0f, 0.0, 0.0, -2.0);
-	glTranslatef(0, 0, 5.0);
-}
-
-void glApp::rotateRight() {
-	glTranslatef(0, 0, -5.0);
-	glRotatef(1.0f, 0.0f, 0.0f, 2.0f);
-	glTranslatef(0, 0, 5.0);
-}
-
-void glApp::rotateUp() {
-	glTranslatef(0, 0, -5.0);
-	glRotatef(1.0f, -2.0f, 0.0f, 0.0f);
-	glTranslatef(0, 0, 5.0);
-}
-
-void glApp::rotateDown() {
-	glTranslatef(0, 0, -5.0);
-	glRotatef(1.0f, 2.0f, 0.0f, 0.0f);
-	glTranslatef(0, 0, 5.0);
-}
-
-void delay() {
-
+	if ((button == 3) || (button == 4)) {
+		if (state == GLUT_UP){
+			gluLookAt(0, 0, 0, 0, 0, -5, 0, 1, 0);
+		}
+	}
 }
 
 void glApp::animate() {
 	for (int i = 0; i < 100; i++) {
 		g.runAlgorithmIteration();
-		//glutDisplayFunc(displayCallback);
 		render();
-		//sleep(500);
-
 	}
 }
 
-void glApp::keypress(unsigned char key) {
-	if (key == 114) {
+void glApp::idle() {
+	checkKeyboard();
+	glutPostRedisplay();
+}
+
+void glApp::checkKeyboard() {
+	if (buffer[114] == true) {
 		g.runAlgorithmIteration();
 	}
-	if (key == 't') {
-		//g.runAlgorithm();
-		//t
+	if (buffer[116] == true) {
 		animate();
+	}
+	if (buffer[97] == true) {
+		g.rotateLeft();
+	}
+	if (buffer[100] == true) {
+		g.rotateRight();
+	}
+	if (buffer[119] == true) {
+		g.rotateUp();
+	}
+	if (buffer[115] == true) {
+		g.rotateDown();
+	}
+	/*if (key == 'i') {
+		gluLookAt(0, -5, -5, 0, 0, -5, 0, 1, 0);
+		std::cout << "Pressed i" << std::endl;;
+	}*/
+}
 
-	}
-	if (key == 97) {
-		rotateLeft();
-	}
-	if (key == 100) {
-		rotateRight();
-	}
-	if (key == 119) {
-		rotateUp();
-	}
-	if (key == 115) {
-		rotateDown();
-	}
+void glApp::keypressUp(int key, int x, int y) {
+	buffer[key] = false;
+}
+
+void glApp::keypress(unsigned char key,int x, int y) {
+	buffer[key] = true;
 }
 
 void glApp::windowToScene(float& x, float &y) {

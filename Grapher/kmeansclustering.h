@@ -7,9 +7,10 @@
 #define kmeansclustering_hpp
 
 class kmeans {
-	std::vector<cluster> clusters;
+	//std::vector<centroid> centroids;
 	unsigned int k;
 	// add constructor that takes the "k" for the number of clusters
+	
 public:
 	inline float euclideanDistance2D(point &, centroid &);
 	inline int findNearestCentroid(point &, std::vector<centroid> &);
@@ -18,8 +19,8 @@ public:
 	void setK(unsigned int);
 	unsigned int getK();
 	void checkPoint(point &p, std::vector<centroid> & centroids, int index);
-	//void threadOneT(std::vector<point> & points, std::vector<centroid> & centroids, unsigned int k);
-
+	static void computeT1(std::vector<point> &, std::vector<centroid> &, int);
+	static void computeT2(std::vector<point> &, std::vector<centroid> &, int);
 };
 
 #endif

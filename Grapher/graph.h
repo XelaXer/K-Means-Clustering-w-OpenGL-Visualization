@@ -24,5 +24,10 @@ public:
 	void runAlgorithm();
 	void runAlgorithmIteration();
 	void generateCentroids();
+	void autorun();
+	void rotateLeft();
+	void rotateRight();
+	void rotateUp();
+	void rotateDown();
 };
 #endif

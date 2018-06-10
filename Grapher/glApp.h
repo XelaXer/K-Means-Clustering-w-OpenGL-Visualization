@@ -10,6 +10,7 @@ class glApp {
 	
 	
 public:
+	bool buffer[128];
 	//bool mouseDown;
 	// Camera position
 	float x = 0.0, y = -5.0; // initially 5 units south of origin
@@ -32,10 +33,12 @@ public:
 	void rotateUp();
 	void rotateDown();
 	void render();
-	void keypress(unsigned char);
+	void keypress(unsigned char,int, int);
+	void keypressUp(int, int, int);
 	void mouseMove(int,int);
 	void mouseButton(int, int, int, int);
 	void windowToScene(float &, float &);
 	void animate();
+	void checkKeyboard();
 };
 #endif

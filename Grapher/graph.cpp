@@ -16,6 +16,14 @@ graph::graph() {
 	initialize();
 }
 
+void graph::autorun() {
+	points.reserve(400);
+	generateRandomData(400);
+	km.setK(60);
+	generateCentroids();
+
+}
+
 void graph::initialize() {
 	std::ifstream myfile("input.txt");
 	std::string line;
@@ -26,6 +34,10 @@ void graph::initialize() {
 	char c;
 	std::cout << "Enter the number of clusters:";
 	std::cin >> k;
+	if (k == 420) {
+		autorun();
+		goto done;
+	}
 	km.setK(k);
 	std::cout << std::endl;
 	std::cout << "Random Data (y) or Data from Text File (n): ";
@@ -37,6 +49,7 @@ void graph::initialize() {
 		std::cout << std::endl;
 		points.reserve(cc);
 		generateRandomData(cc);
+		gluLookAt(10, 10, 0, 0, 0, -5, 0, 1, 0);
 	} else if (c == 'n') {
 		if (myfile.is_open()) {
 			while (std::getline(myfile, line)) {
@@ -52,6 +65,8 @@ void graph::initialize() {
 		}
 	}
 	generateCentroids();
+done: {}
+	
 }
 
 void graph::generateCentroids() {
@@ -97,14 +112,29 @@ void graph::runAlgorithm() {
 
 
 void graph::runAlgorithmIteration() {
-	
-	//clock_t startTime = clock();
+	clock_t startTime = clock();
 	//std::cout << "K-Means Clustering Iteration: " << iterationCount++ << std::endl;
-	
 	km.runIteration(points, centroids, km.getK());
-	//std::cout << "Time: " << clock()-startTime << std::endl;
+	std::cout << "Time: " << clock()-startTime << std::endl;
 }
 
-void graph::rotate() {
-	
+void graph::rotateLeft() {
+	glTranslatef(0, 0, -5.0);
+	glRotatef(1.0f, 0.0, 0.0, -2.0);
+	glTranslatef(0, 0, 5.0);
+}
+void graph::rotateRight() {
+	glTranslatef(0, 0, -5.0);
+	glRotatef(1.0f, 0.0f, 0.0f, 2.0f);
+	glTranslatef(0, 0, 5.0);
+}
+void graph::rotateUp() {
+	glTranslatef(0, 0, -5.0);
+	glRotatef(1.0f, -2.0f, 0.0f, 0.0f);
+	glTranslatef(0, 0, 5.0);
+}
+void graph::rotateDown() {
+	glTranslatef(0, 0, -5.0);
+	glRotatef(1.0f, 2.0f, 0.0f, 0.0f);
+	glTranslatef(0, 0, 5.0);
 }
