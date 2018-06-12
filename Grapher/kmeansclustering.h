@@ -19,8 +19,10 @@ public:
 	void setK(unsigned int);
 	unsigned int getK();
 	void checkPoint(point &p, std::vector<centroid> & centroids, int index);
-	static void computeT1(std::vector<point> &, std::vector<centroid> &, int);
-	static void computeT2(std::vector<point> &, std::vector<centroid> &, int);
+	void computeT1(std::vector<point> &, std::vector<centroid> &);
+	void computeT2(std::vector<point> &, std::vector<centroid> &);
+	void runMultiThread(std::vector<point> &, std::vector<centroid> &);
+
 };
 
 #endif

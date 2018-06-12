@@ -12,10 +12,12 @@ class graph {
 	kmeans km;
 	std::vector<point> points;
 	std::vector<centroid> centroids;
-	int iterationCount;
+	
 	float angleView;
 
 public:
+	int iterationCount;
+	int maxItrCount;
 	graph::graph();
 	void rotate();
 	void draw();
@@ -29,5 +31,7 @@ public:
 	void rotateRight();
 	void rotateUp();
 	void rotateDown();
+	void reset();
+	void runMultiThread();
 };
 #endif

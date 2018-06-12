@@ -109,13 +109,18 @@ void graph::runAlgorithm() {
 	km.run(points, centroids, km.getK());
 }
 
-
+void graph::runMultiThread() {
+	//std::cout << "K-Means Clustering Algorithm Started" << std::endl;
+	
+	//km.runIteration(points, centroids, km.getK());
+	km.runMultiThread(points, centroids);
+}
 
 void graph::runAlgorithmIteration() {
-	clock_t startTime = clock();
+	//clock_t startTime = clock();
 	//std::cout << "K-Means Clustering Iteration: " << iterationCount++ << std::endl;
 	km.runIteration(points, centroids, km.getK());
-	std::cout << "Time: " << clock()-startTime << std::endl;
+	//std::cout << "Time: " << clock()-startTime << std::endl;
 }
 
 void graph::rotateLeft() {
@@ -137,4 +142,15 @@ void graph::rotateDown() {
 	glTranslatef(0, 0, -5.0);
 	glRotatef(1.0f, 2.0f, 0.0f, 0.0f);
 	glTranslatef(0, 0, 5.0);
+}
+
+void graph::reset() {
+	int p;
+	p = points.size();
+	//c = centroids.size();
+	points.clear();
+	centroids.clear();
+	generateRandomData(p);
+	generateCentroids();
+	iterationCount = 0;
 }
