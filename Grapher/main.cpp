@@ -1,6 +1,10 @@
 #include <freeglut.h>
 #include <thread>
+#include <iostream>
 #include "glApp.h"
+
+
+
 int main(int argc, char** argv) {
 	const char* label = "K-Means Clustering Grapher";
 	// GLUT Initialization
@@ -11,6 +15,13 @@ int main(int argc, char** argv) {
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
 	// Run GLUT app containing Grapher app
+	
+
+	
 	glApp app(label);
 	app.run();
+
+
+	//std::thread t1(std::ref(app.run()));
+	//std::thread t2(th2);
 }

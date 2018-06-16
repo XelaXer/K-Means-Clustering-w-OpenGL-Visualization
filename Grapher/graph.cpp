@@ -17,9 +17,9 @@ graph::graph() {
 }
 
 void graph::autorun() {
-	points.reserve(400);
-	generateRandomData(400);
-	km.setK(60);
+	points.reserve(3000);
+	generateRandomData(3000);
+	km.setK(10);
 	generateCentroids();
 
 }

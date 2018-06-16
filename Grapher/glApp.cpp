@@ -70,6 +70,7 @@ void resize(int width, int height) {
 }
 
 glApp::glApp(const char* label) {
+	time = clock();
 	angleView = 0.0;
 	currentInstance = this;
 	glutInitWindowPosition(0, 0);
@@ -90,20 +91,16 @@ void th2() {
 	glutMotionFunc(mouseMoveCallback);
 }
 
-void th3() {
-	glutIdleFunc(idleCallback);
-}
 
 void glApp::run() {
 	//std::thread t1(th1);
 	//std::thread t2(th2);
-	//std::thread t3(th3);
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyboardCallback);
 	glutKeyboardUpFunc(keyboardUpCallback);
-	//glutMouseFunc(mouseButtonCallback);
-	//glutMotionFunc(mouseMoveCallback);
+	glutMouseFunc(mouseButtonCallback);
+	glutMotionFunc(mouseMoveCallback);
 	glutIdleFunc(idleCallback);
 	glutMainLoop();
 }
@@ -152,6 +149,15 @@ void glApp::animate() {
 		render();
 	}
 }
+void glApp::test() {
+	g.reset();
+	for (int i = 0; i < 100; i++) {
+		g.runAlgorithmIteration();
+		render();
+	}
+	std::cout << "Time: " << clock() - time << std::endl;
+	time = clock();
+}
 
 void glApp::idle() {
 	checkKeyboard();
@@ -162,7 +168,6 @@ void glApp::idle() {
 		//render();
 		g.iterationCount++;
 	}
-
 }
 
 void glApp::checkKeyboard() {
@@ -170,7 +175,8 @@ void glApp::checkKeyboard() {
 		g.runAlgorithmIteration();
 	}
 	if (buffer['q'] == true) {
-		g.maxItrCount += 50; 
+		g.maxItrCount = 0;
+		//g.maxItrCount += 50; 
 	}
 	if (buffer['r'] == true) {
 		g.reset();
@@ -191,6 +197,9 @@ void glApp::checkKeyboard() {
 	if (buffer[115] == true) {
 		g.rotateDown();
 		//std::cout << "press s" << std::endl;
+	}
+	if (buffer['m'] == true) {
+		test();
 	}
 	/*if (key == 'i') {
 		gluLookAt(0, -5, -5, 0, 0, -5, 0, 1, 0);

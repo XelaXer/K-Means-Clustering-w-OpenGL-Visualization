@@ -7,7 +7,6 @@
 #define kmeansclustering_hpp
 
 class kmeans {
-	//std::vector<centroid> centroids;
 	unsigned int k;
 	// add constructor that takes the "k" for the number of clusters
 	

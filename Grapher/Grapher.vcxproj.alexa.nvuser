@@ -2,4 +2,7 @@
     <SettingsPointModel DefinitionId="3eb7ba04-016d-475e-b0ff-daa5f0e59a08" DisplayName="Launch">
         <Property Name="LaunchSettingsModifiedByUser" Value="True" />
     </SettingsPointModel>
+    <SettingsPointModel DefinitionId="9e01db22-a7ae-4ca9-b2a8-6a4e66dd5cb7" DisplayName="Synchronization">
+        <Property Name="SynchronizeFiles" Value="False" />
+    </SettingsPointModel>
 </ProjectSettingsModel>

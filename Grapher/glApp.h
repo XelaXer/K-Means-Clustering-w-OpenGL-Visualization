@@ -7,7 +7,7 @@ class glApp {
 	graph g;
 	int width, height;
 	float angleView;
-	
+	clock_t time;
 	
 public:
 	bool buffer[128];
@@ -40,5 +40,6 @@ public:
 	void windowToScene(float &, float &);
 	void animate();
 	void checkKeyboard();
+	void test();
 };
 #endif
