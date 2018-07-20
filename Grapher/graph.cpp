@@ -1,4 +1,5 @@
 #include <freeglut.h>
+#include <GL/GL.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -17,11 +18,10 @@ graph::graph() {
 }
 
 void graph::autorun() {
-	points.reserve(3000);
-	generateRandomData(3000);
-	km.setK(10);
+	points.reserve(5000);
+	generateRandomData(5000);
+	km.setK(50);
 	generateCentroids();
-
 }
 
 void graph::initialize() {
@@ -49,7 +49,7 @@ void graph::initialize() {
 		std::cout << std::endl;
 		points.reserve(cc);
 		generateRandomData(cc);
-		gluLookAt(10, 10, 0, 0, 0, -5, 0, 1, 0);
+		//gluLookAt(10, 10, 0, 0, 0, -5, 0, 1, 0);
 	} else if (c == 'n') {
 		if (myfile.is_open()) {
 			while (std::getline(myfile, line)) {
@@ -71,20 +71,65 @@ done: {}
 
 void graph::generateCentroids() {
 	srand(static_cast <unsigned> (time(0)));
-	float x, y, z, s;
+	float x, y, z, r, g, b, s;
 	int group = 0;
 	for (int i = 0; i < km.getK(); i++) {
 		x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-		centroids.push_back(centroid(x, y, z - 5.0, 8.0, group++));
+
+		r = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0 - (0.1))));
+		g = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0 - (0.1))));
+		b = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0 - (0.1))));
+
+		centroids.push_back(centroid(x, y, z - 5.0, r, g, b, 8.0, group++));
 	}
 }
 
 void graph::generateRandomData(int amount) {
 	int tag = 0;
+	int type = 0;
 	srand(static_cast <unsigned> (time(0)));
 	float x, y, z, s;
+	//type = 0 + static_cast <int> (rand()) / (static_cast <int> (RAND_MAX / (5 - (0))));
+
+	/*if (type < 1) {
+		for (int i = 0; i < amount; i++) {
+			x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0 - (-1.0))));
+			z = -0.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-0.5))));
+			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
+		}
+	} else if (type < 2) {
+		for (int i = 0; i < amount; i++) {
+			x = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
+		}
+	} else if (type < 3) {
+		for (int i = 0; i < amount; i++) {
+			x = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			z = -1.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
+		}
+	} else if (type < 4) {
+		for (int i = 0; i < amount; i++) {
+			x = 1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
+		}
+	} else if (type < 5) {
+		for (int i = 0; i < amount; i++) {
+			x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
+			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
+		}
+	}*/
+
 	for (int i = 0; i < amount; i++) {
 		x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
@@ -95,6 +140,20 @@ void graph::generateRandomData(int amount) {
 
 void graph::draw() {
 	g.draw();
+	for (int i = 0; i < points.size(); i++) {
+		points[i].draw();
+	}
+	for (int i = 0; i < centroids.size(); i++) {
+		centroids[i].draw();
+		centroids[i].drawConnections();
+	}
+}
+
+void graph::experimentalDraw() {
+	g.draw();
+	//glGenBuffers(1, VertexVBOID);
+	//glBindBuffer(GL_ARRAY_BUFFER, VertexVBOID);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(MyVertex) * 3, &pvertex[0].x, GL_STATIC_DRAW);
 	for (int i = 0; i < points.size(); i++) {
 		points[i].draw();
 	}

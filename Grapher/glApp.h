@@ -9,8 +9,10 @@ class glApp {
 	float angleView;
 	clock_t time;
 	
+	
 public:
 	bool buffer[128];
+	//std::thread t1;
 	//bool mouseDown;
 	// Camera position
 	float x = 0.0, y = -5.0; // initially 5 units south of origin
@@ -41,5 +43,6 @@ public:
 	void animate();
 	void checkKeyboard();
 	void test();
+	std::thread runThreadedAlgoItr();
 };
 #endif

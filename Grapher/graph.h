@@ -1,4 +1,5 @@
 #include <vector>
+#include <thread>
 #include "grid.h"
 #include "point.h"
 #include "centroid.h"
@@ -12,8 +13,8 @@ class graph {
 	kmeans km;
 	std::vector<point> points;
 	std::vector<centroid> centroids;
-	
 	float angleView;
+
 
 public:
 	int iterationCount;
@@ -33,5 +34,7 @@ public:
 	void rotateDown();
 	void reset();
 	void runMultiThread();
+	void experimentalDraw();
+
 };
 #endif

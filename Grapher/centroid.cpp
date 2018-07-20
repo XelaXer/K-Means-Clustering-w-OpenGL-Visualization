@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "centroid.h"
 
-centroid::centroid() {}
 float centroid::getX() { return x; }
 float centroid::getY() { return y; }
 float centroid::getZ() { return z; }
@@ -22,6 +21,21 @@ void centroid::setB(float k) { b = k; }
 void centroid::setSize(float k) { size = k; }
 void centroid::setGroup(int k) { group = k; }
 void centroid::setLabel(std::string k) { label = k; }
+int centroid::membersSize() { return members.size(); }
+
+centroid::centroid() {
+	x = 0;
+	y = 0;
+	z = 0;
+	r = 0;
+	g = 0;
+	b = 0;
+	xAvg = 0;
+	yAvg = 0;
+	zAvg = 0;
+	size = 10.0;
+}
+
 centroid::centroid(float xx, float yy, float zz) {
 	x = xx;
 	y = yy;
@@ -34,6 +48,7 @@ centroid::centroid(float xx, float yy, float zz) {
 	zAvg = 0;
 	size = 10.0;
 }
+
 centroid::centroid(float xx, float yy, float zz, float ss, int gs) {
 	x = xx;
 	y = yy;
@@ -47,6 +62,7 @@ centroid::centroid(float xx, float yy, float zz, float ss, int gs) {
 	size = ss;
 	group = gs;
 }
+
 centroid::centroid(float xx, float yy, float zz, float sizeS) {
 	x = xx;
 	y = yy;
@@ -59,7 +75,8 @@ centroid::centroid(float xx, float yy, float zz, float sizeS) {
 	zAvg = 0;
 	size = sizeS;
 }
-centroid::centroid(float xx, float yy, float zz, float rr, float gg, float bb, float sizeS) {
+
+centroid::centroid(float xx, float yy, float zz, float rr, float gg, float bb, float sizeS, int gs) {
 	x = xx;
 	y = yy;
 	z = zz;
@@ -70,6 +87,7 @@ centroid::centroid(float xx, float yy, float zz, float rr, float gg, float bb, f
 	yAvg = 0;
 	zAvg = 0;
 	size = sizeS;
+	group = gs;
 }
 
 void centroid::draw() {
@@ -83,16 +101,16 @@ void centroid::draw() {
 	// Upper vertex
 	//glVertex3f(x, y + 0.025, z-5.0f);
 	glEnd();
-
 }
 
 void centroid::addMember(point & a) {
+	a.setR(r);
+	a.setB(b);
+	a.setG(g);
 	members.push_back(a);
 }
 
-int centroid::membersSize() {
-	return members.size();
-}
+
 
 void centroid::computeAverage() {
 	if (members.size() == 0) { return; }
@@ -144,8 +162,8 @@ float centroid::computeZAverage() {
 
 void centroid::drawConnections() {
 	float xx, yy, zz;
-	glLineWidth(0.25);
-	glColor3f(0, 0, 1);
+	glLineWidth(0.08);
+	glColor3f(r, g, b);
 	for (int i = 0; i < members.size(); i++) {
 		glBegin(GL_LINES);
 		glVertex3f(x, y, z);

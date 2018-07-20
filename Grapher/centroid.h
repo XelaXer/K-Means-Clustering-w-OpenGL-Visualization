@@ -18,7 +18,7 @@ public:
 	centroid::centroid(float, float, float);
 	centroid::centroid(float, float, float, float);
 	centroid::centroid(float, float, float, float, int);
-	centroid::centroid(float, float, float, float, float, float, float);
+	centroid::centroid(float, float, float, float, float, float, float, int);
 	float getX();
 	float getY();
 	float getZ();

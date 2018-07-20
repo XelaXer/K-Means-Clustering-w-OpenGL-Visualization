@@ -89,18 +89,23 @@ void th2() {
 	glutKeyboardUpFunc(keyboardUpCallback);
 	glutMouseFunc(mouseButtonCallback);
 	glutMotionFunc(mouseMoveCallback);
+	// Add to run() to thread
+	//std::thread t1(th1);
+	//std::thread t2(th2);
+	//t1.join();
+	//t2.join();
+
 }
 
 
 void glApp::run() {
-	//std::thread t1(th1);
-	//std::thread t2(th2);
+
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(keyboardCallback);
 	glutKeyboardUpFunc(keyboardUpCallback);
-	glutMouseFunc(mouseButtonCallback);
-	glutMotionFunc(mouseMoveCallback);
+//	glutMouseFunc(mouseButtonCallback);
+//	glutMotionFunc(mouseMoveCallback);
 	glutIdleFunc(idleCallback);
 	glutMainLoop();
 }
@@ -150,13 +155,21 @@ void glApp::animate() {
 	}
 }
 void glApp::test() {
-	g.reset();
-	for (int i = 0; i < 100; i++) {
-		g.runAlgorithmIteration();
-		render();
-	}
-	std::cout << "Time: " << clock() - time << std::endl;
+	int avg = 0;
+	int itrCount = 25;
 	time = clock();
+	for (int i = 0; i < itrCount; i++) {
+		g.reset();
+		for (int i = 0; i < 50; i++) {
+			g.runAlgorithmIteration();
+			render();
+		}
+		std::cout << "Time: " << clock() - time << std::endl;
+		avg += clock() - time;
+		time = clock();
+	}
+	avg /= itrCount;
+	std::cout << "Average Time: " << avg << std::endl;
 }
 
 void glApp::idle() {
@@ -167,7 +180,15 @@ void glApp::idle() {
 		g.runAlgorithmIteration();
 		//render();
 		g.iterationCount++;
+		if (g.iterationCount == g.maxItrCount) {
+			g.maxItrCount = 0;
+			g.iterationCount = 0;
+		}
 	}
+}
+
+std::thread glApp::runThreadedAlgoItr() {
+	//return std::thread([=] { g.runAlgorithmIterationThread(); });
 }
 
 void glApp::checkKeyboard() {
@@ -175,15 +196,14 @@ void glApp::checkKeyboard() {
 		g.runAlgorithmIteration();
 	}
 	if (buffer['q'] == true) {
-		g.maxItrCount = 0;
-		//g.maxItrCount += 50; 
+		//g.maxItrCount = 0;
+		g.maxItrCount = 25; 
 	}
 	if (buffer['r'] == true) {
 		g.reset();
 	}
 	if (buffer['c'] == true) {
-		g.runMultiThread();
-		std::cout << "Key works" << std::endl;
+		//g.runMultiThread();
 	}
 	if (buffer[97] == true) {
 		g.rotateLeft();
@@ -199,6 +219,17 @@ void glApp::checkKeyboard() {
 		//std::cout << "press s" << std::endl;
 	}
 	if (buffer['m'] == true) {
+		test();
+	}
+	if (buffer['n'] == true) {
+		for (int i = 0; i < 4; i++) {
+			g.rotateUp();
+		}
+		/*for (int i = 0; i < 3; i++) {
+			g.rotateLeft();
+		}*/
+	}
+	if (buffer['t'] == true) {
 		test();
 	}
 	/*if (key == 'i') {

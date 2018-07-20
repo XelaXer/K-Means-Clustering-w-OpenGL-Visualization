@@ -88,8 +88,6 @@ void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & cent
 	}
 }
 
-
-
 void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> & centroids) {
 
 	std::cout << "Created Thread 1" << std::endl;
@@ -108,9 +106,6 @@ void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> &
 	}
 
 }
-
-
-
 
 //
 //void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & centroids, int index) {
