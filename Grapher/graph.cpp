@@ -7,6 +7,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
+#include <random>
+#include <cmath>
 #include "graph.h"
 #include "point.h"
 #include "grid.h"
@@ -89,53 +91,45 @@ void graph::generateCentroids() {
 void graph::generateRandomData(int amount) {
 	int tag = 0;
 	int type = 0;
-	srand(static_cast <unsigned> (time(0)));
 	float x, y, z, s;
-	//type = 0 + static_cast <int> (rand()) / (static_cast <int> (RAND_MAX / (5 - (0))));
-
-	/*if (type < 1) {
-		for (int i = 0; i < amount; i++) {
-			x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0 - (-1.0))));
-			z = -0.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-0.5))));
-			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
-		}
-	} else if (type < 2) {
-		for (int i = 0; i < amount; i++) {
-			x = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
-		}
-	} else if (type < 3) {
-		for (int i = 0; i < amount; i++) {
-			x = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			z = -1.5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
-		}
-	} else if (type < 4) {
-		for (int i = 0; i < amount; i++) {
-			x = 1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			y = -1.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
-		}
-	} else if (type < 5) {
-		for (int i = 0; i < amount; i++) {
-			x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
-			points.push_back(point(x, y, z - 5.0, 5.0, tag++));
-		}
-	}*/
-
+	srand(static_cast <unsigned> (time(0)));
 	for (int i = 0; i < amount; i++) {
 		x = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		y = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		z = -2.0 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.0 - (-2.0))));
 		points.push_back(point(x, y, z - 5.0, 5.0, tag++));
 	}
+
+
+
+}
+
+void graph::generateRandomDataExperimental(int amount, int clusters) {
+	int tag = 0;
+	float seedMean = -1;
+	srand(static_cast <unsigned> (time(0)));
+
+	for (int c = 0; c < clusters; c++, seedMean+=0.5){
+		std::random_device rnd_device;
+		std::mt19937 mersenne_engine{ rnd_device() };
+		std::normal_distribution<float> dist{ seedMean, 0.5 };
+		auto gen = [&dist, &mersenne_engine]() {
+			return dist(mersenne_engine);
+		};
+
+		std::vector<float> xs(amount / clusters);
+		std::vector<float> ys(amount / clusters);
+		std::vector<float> zs(amount / clusters);
+
+		std::generate(begin(xs), end(xs), gen);
+		std::generate(begin(ys), end(ys), gen);
+		std::generate(begin(zs), end(zs), gen);
+
+		for (int i = 0; i < amount / clusters; i++) {
+			points.push_back(point(xs[i], ys[i], (zs[i] - 5.0), 5.0, tag++));
+		}
+	}
+
 }
 
 void graph::draw() {
@@ -209,7 +203,17 @@ void graph::reset() {
 	//c = centroids.size();
 	points.clear();
 	centroids.clear();
+	generateCentroids();
+	iterationCount = 0;
 	generateRandomData(p);
+}
+
+void graph::resetExperimental() {
+	int p = points.size();
+	//c = centroids.size();
+	points.clear();
+	centroids.clear();
+	generateRandomDataExperimental(p, 4);
 	generateCentroids();
 	iterationCount = 0;
 }

@@ -89,23 +89,62 @@ void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & cent
 }
 
 void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> & centroids) {
-
-	std::cout << "Created Thread 1" << std::endl;
-	std::thread t1(&kmeans::computeT1, this, (points), (centroids));
-	std::cout << "Created Thread 2" << std::endl;
-	std::thread t2(&kmeans::computeT2, this, (points), (centroids));
-
-	t1.join();
-	t2.join();
-	std::cout << "Threads Joined" << std::endl;
-	//computeT1(points, centroids);
-	//computeT2(points, centroids);
-
-	for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
-		i->computeAverage();
+	int threadCount = 4;
+	int vectorSize = points.size() / threadCount;
+	std::vector < std::thread > threads;
+	std::vector < std::vector<int> > dataSets(threadCount, std::vector<int>(vectorSize));
+	for (int i = 0; i < threadCount; i++) {
+		auto start_itr = std::next(points.cbegin(), i*vectorSize);
+		auto end_itr = std::next(points.cbegin(), i*vectorSize + vectorSize);
+		//dataSets[i].resize(vectorSize);
+		std::copy(start_itr, end_itr, dataSets[i].begin());
 	}
 
 }
+/*
+
+float runDynamicThreading(unsigned int size, unsigned int threadCount) {
+// Vector (Dataset) and Thread Variables
+int vectorSize = size / threadCount;
+std::vector < std::thread > threads;
+std::vector < std::vector<int> > dataSets(threadCount, std::vector<int>(vectorSize));
+
+// Random Number Generator
+std::random_device rnd_device;
+std::mt19937 mersenne_engine{ rnd_device() };
+std::uniform_int_distribution<int> dist{ -10000, 10000 };
+auto gen = [&dist, &mersenne_engine]() {
+return dist(mersenne_engine);
+};
+
+for (std::vector<std::vector<int> >::iterator it = dataSets.begin(); it != dataSets.end(); ++it) {
+std::vector<int> datasetITR(vectorSize);
+std::generate(begin(datasetITR), end(datasetITR), gen);
+*it = datasetITR;
+}
+
+for (std::vector<std::vector<int> >::iterator it = dataSets.begin(); it != dataSets.end(); ++it) {
+threads.push_back(std::thread(&computeInt, std::ref(*it)));
+}
+
+// Start Time
+auto t1 = Clock::now();
+
+// Join Threads
+for (auto& th : threads) {
+th.join();
+}
+
+// Stop Time
+auto t2 = Clock::now();
+
+// Return time difference
+return std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+}
+
+*/
+
+
 
 //
 //void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & centroids, int index) {
@@ -119,3 +158,21 @@ void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> &
 //	std::thread t2(&kmeans::computeT2, this, std::ref(points), std::ref(centroids), std::ref(index));
 //t1.join();
 //t2.join();
+
+/*
+std::cout << "Created Thread 1" << std::endl;
+std::thread t1(&kmeans::computeT1, this, (points), (centroids));
+std::cout << "Created Thread 2" << std::endl;
+std::thread t2(&kmeans::computeT2, this, (points), (centroids));
+
+t1.join();
+t2.join();
+std::cout << "Threads Joined" << std::endl;
+//computeT1(points, centroids);
+//computeT2(points, centroids);
+
+for (std::vector<centroid>::iterator i = centroids.begin(); i != centroids.end(); ++i) {
+i->computeAverage();
+}
+
+*/

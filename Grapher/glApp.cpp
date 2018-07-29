@@ -232,6 +232,13 @@ void glApp::checkKeyboard() {
 	if (buffer['t'] == true) {
 		test();
 	}
+
+	if (buffer['l'] == true) {
+		g.resetExperimental();
+	}
+
+	
+
 	/*if (key == 'i') {
 		gluLookAt(0, -5, -5, 0, 0, -5, 0, 1, 0);
 		std::cout << "Pressed i" << std::endl;;

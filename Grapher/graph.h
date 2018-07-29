@@ -35,6 +35,8 @@ public:
 	void reset();
 	void runMultiThread();
 	void experimentalDraw();
+	void generateRandomDataExperimental(int, int);
+	void resetExperimental();
 
 };
 #endif
