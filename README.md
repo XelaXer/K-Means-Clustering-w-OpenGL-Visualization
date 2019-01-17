@@ -11,7 +11,9 @@ Then a OpenGL window will appear and a 3D grid will appear.
   
   'A,' 'S', 'W', 'D' shifts the view of the 3D space
   'Q' will run the K-Means-Clustering algorithm
-  
+  'E' will run one iteration of the K-Means-Clustering algorithm
+  'R' will reset the graph and regenerate the points
+  'T' runs a benchmark to test execution times
 
 
 To build with Visual Studio Community (2015 or 2017)
