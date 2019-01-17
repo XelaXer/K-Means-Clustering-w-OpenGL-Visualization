@@ -87,7 +87,7 @@ void kmeans::computeT2(std::vector<point> & points, std::vector<centroid> & cent
 		checkPoint(points[i], centroids, index);
 	}
 }
-
+/*
 void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> & centroids) {
 	int threadCount = 4;
 	int vectorSize = points.size() / threadCount;
@@ -99,8 +99,9 @@ void kmeans::runMultiThread(std::vector<point> & points, std::vector<centroid> &
 		//dataSets[i].resize(vectorSize);
 		std::copy(start_itr, end_itr, dataSets[i].begin());
 	}
-
 }
+*/
+
 /*
 
 float runDynamicThreading(unsigned int size, unsigned int threadCount) {

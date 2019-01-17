@@ -104,6 +104,7 @@ void graph::generateRandomData(int amount) {
 
 }
 
+
 void graph::generateRandomDataExperimental(int amount, int clusters) {
 	int tag = 0;
 	float seedMean = -1;
@@ -166,7 +167,7 @@ void graph::runMultiThread() {
 	//std::cout << "K-Means Clustering Algorithm Started" << std::endl;
 	
 	//km.runIteration(points, centroids, km.getK());
-	km.runMultiThread(points, centroids);
+	//km.runMultiThread(points, centroids);
 }
 
 void graph::runAlgorithmIteration() {

@@ -20,7 +20,7 @@ public:
 	void checkPoint(point &p, std::vector<centroid> & centroids, int index);
 	void computeT1(std::vector<point> &, std::vector<centroid> &);
 	void computeT2(std::vector<point> &, std::vector<centroid> &);
-	void runMultiThread(std::vector<point> &, std::vector<centroid> &);
+	//void runMultiThread(std::vector<point> &, std::vector<centroid> &);
 };
 
 #endif
